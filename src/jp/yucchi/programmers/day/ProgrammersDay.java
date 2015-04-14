@@ -55,7 +55,14 @@ public class ProgrammersDay {
                 .forEach(pDay -> System.out.println(pDay.format(DateTimeFormatter.ofPattern("yyyy年 M月d日 E曜日"))));
         System.out.println("(○･ω･)ﾉ-------------end-------------");
 
-        Stream.iterate(today.getYear(), i -> i + 1)
+        int startYear;
+        if (DAYS.between(LocalDate.of(today.getYear(), 1, 1), today) >= 256) {
+            startYear = today.getYear() + 1;
+        } else {
+            startYear = today.getYear();
+        }
+
+        Stream.iterate(startYear, i -> i + 1)
                 .map(year -> Year.of(year))
                 .map(day -> day.atDay(256))
                 .filter(day -> day.getDayOfWeek() == DayOfWeek.SATURDAY)
